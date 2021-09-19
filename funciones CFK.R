@@ -182,10 +182,3 @@ my_scores_rendim<-function(datos,grupo){
   x
 }
 
-
-
-strsplit(preinicial1$p97[1],split = " ")
-strsplit(preinicial1$p97[1],split = " ")
-strsplit(preinicial1$p97[1],split = " ")
-strsplit(preinicial1$p97[1],split = " ")
-
