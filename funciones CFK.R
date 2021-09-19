@@ -15,7 +15,7 @@ mycfa<-function(mymodels,mydata){
   
   modelos<-list()
   for(i in 1:length(mymodels)){
-    modelos[[i]] <-cfa(mymodels[[i]],data = mydata)  # computamos cfa y guardamos los objetos lavaan en una lista
+    modelos[[i]] <-cfa(mymodels[[i]],data = mydata)   # computamos cfa y guardamos los objetos lavaan en una lista
   }
   names(modelos)<-names(mymodels)
   
