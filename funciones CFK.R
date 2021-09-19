@@ -147,6 +147,35 @@ my_scores_rendim<-function(datos,grupo){
     x$pc8<-ifelse(is.na(datos$pc8)==TRUE,0,ifelse(datos$pc8=="Imagen 3",1,0))
   }
   
+  if(grupo=="inicial2"){
+    
+    x$pc1<- ifelse(datos$pc1=="SI" & datos$pc2=="SI",1,0)
+    
+    x$pc2<-ifelse(datos$pc6=="SI" & datos$pc8=="SI",1,0)
+    
+    x$pc3<-ifelse(is.na(datos$pc11)==TRUE,0,ifelse(datos$pc11=="3",1,0))
+    
+    x$pc4<-ifelse(is.na(datos$pc12)==TRUE,0,ifelse(datos$pc12=="El programa no funciona, debe capturar nuevamente el valor de la temperatura luego de encender el ventilador",1,0))
+    
+    x$pc5<-ifelse(is.na(datos$pc13)==TRUE,0,ifelse(datos$pc13=="6",1,0))
+    
+    x$pc6<-ifelse(is.na(datos$pc14)==TRUE,0,ifelse(datos$pc14=="10",1,0))
+    
+    x$pc7<-ifelse(is.na(datos$pc15)==TRUE,0,ifelse(datos$pc15=="II y III",1,0))
+    
+    ax<-strsplit(datos$pc16,split = " "); b<-c()
+    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][2]=="segunda" & ax[[i]][6]!="solamente",1,0)}
+    x$pc8<-ifelse(is.na(b)==TRUE,0,b)
+    
+    x$pc9<-ifelse(is.na(datos$pc17)==TRUE,0,ifelse(datos$pc17=="Imagen 3",1,0))
+    
+    ax<-strsplit(datos$pc18,split = " "); b<-c()
+    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][6]=="120.",1,0)}
+    x$pc10<-ifelse(is.na(b)==TRUE,0,b)
+    
+    x$pc11<-ifelse(is.na(datos$pc19)==TRUE,0,ifelse(datos$pc19=="La botella B debe ser verde",1,0))
+    
+    }
   if(grupo=="avanzado2"){
     
     ax<-strsplit(datos$pc1,split = " "); b<-c()
