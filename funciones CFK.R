@@ -201,8 +201,10 @@ my_scores_rendim<-function(datos,grupo){
     x$pc7<-ifelse(is.na(b)==TRUE,0,b)
     
     x$pc8<-ifelse(is.na(datos$pc8)==TRUE,0,ifelse(datos$pc8=="Imagen 3",1,0))
-    
-    x$pc9<-ifelse(is.na(datos$pc9)==TRUE,0,ifelse(datos$pc9=="x::3, y::5, z::10",1,0))
+   
+    ax<-strsplit(datos$pc9,split = " "); b<-c()
+    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][1]=="x::3,",1,0)}
+    x$pc9<-ifelse(is.na(b)==TRUE,0,b)
   }
   x<-x[2:ncol(x)]
   x$total_rendim<-rowSums(x,na.rm = TRUE)
