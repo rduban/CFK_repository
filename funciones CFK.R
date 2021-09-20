@@ -202,7 +202,7 @@ my_scores_rendim<-function(datos,grupo){
     
     x$pc8<-ifelse(is.na(datos$pc8)==TRUE,0,ifelse(datos$pc8=="Imagen 3",1,0))
     
-    x$pc9<-ifelse(is.na(datos$pc9)==TRUE,0,ifelse(datos$pc9=="El orden de las entradas a la función no es importante. Por ejemplo, calcular(a, b, c) es lo mismo que calcular(b, a, c)",1,0))
+    x$pc9<-ifelse(is.na(datos$pc9)==TRUE,0,ifelse(datos$pc9=="x::3, y::5, z::10",1,0))
   }
   x<-x[2:ncol(x)]
   x$total_rendim<-rowSums(x,na.rm = TRUE)
