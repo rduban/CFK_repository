@@ -141,7 +141,7 @@ my_scores_rendim<-function(datos,grupo){
     x$pc6<- ifelse(is.na(datos$pc6)==TRUE,0,ifelse(datos$pc6=="Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",1,0))
     
     ax<-strsplit(datos$pc7,split = " "); b<-c()
-    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][4]=="imprime" | ax[[i]][4]!="error",1,0)}
+    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][4]=="imprime" | ax[[i]][4]=="error",1,0)}
     x$pc7<-ifelse(is.na(b)==TRUE,0,b)
     
     x$pc8<-ifelse(is.na(datos$pc8)==TRUE,0,ifelse(datos$pc8=="Imagen 3",1,0))
@@ -197,7 +197,7 @@ my_scores_rendim<-function(datos,grupo){
     x$pc6<- ifelse(is.na(datos$pc6)==TRUE,0,ifelse(datos$pc6=="Cerrar el centro para carros mientras la calidad del aire sea mala, muy mala, o extremadamente mala.",1,0))
     
     ax<-strsplit(datos$pc7,split = " "); b<-c()
-    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][4]=="imprime" | ax[[i]][4]!="error",1,0)}
+    for(i in 1:length(ax)){b[i]<-ifelse(ax[[i]][4]=="imprime" | ax[[i]][4]=="error",1,0)}
     x$pc7<-ifelse(is.na(b)==TRUE,0,b)
     
     x$pc8<-ifelse(is.na(datos$pc8)==TRUE,0,ifelse(datos$pc8=="Imagen 3",1,0))
