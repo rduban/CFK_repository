@@ -401,3 +401,28 @@ my_aciertos_gr<-function(datos ,var_grupo, titulo, curso){
     geom_bar(stat="identity", position = "dodge")+ scale_fill_manual(values=brewer.pal(n = length(unique(Categorias)), name = "Pastel2"))+ geom_text(aes(label=paste(Porcentaje, "%", sep="")), size = 2.7, vjust=0, color="black", position = position_dodge(0.9), size=3.1)+(labs(title = paste("Aciertos de",titulo), x = "", y = "Porcentaje de aciertos"))+
     ylim(0,100) + facet_wrap(aciertos$Categoria, scales = "free")
 }
+
+my_graph.practicas<-function(datos,grupo, fase){
+theme_set(theme_pubclean())
+datos<-na.omit(datos)
+diamonds.frac<-dplyr::sample_frac(datos)
+
+if(grupo==1){
+names(diamonds.frac)<-c("Actividades desconectads","Usa-modifica-crea","Clase magistral","Enseñanza explicita","Marcha silenciosa", "Apren. basado en proyectos")}
+if(grupo==2){
+names(diamonds.frac)<-c("Dar respuesta correcta","Sugerir ir paso a paso","Sugerir revisar notas","Sugerir revisar memorias","Sugerir volver a leer","Usar diferentes valores","Volver a explicar")}
+######
+variables <- colnames(diamonds.frac)
+diamonds.frac[ diamonds.frac == 0 ] <- 'No lo conozco'
+
+diamonds.m <- reshape::melt(diamonds.frac,id.vars=0)
+
+diamonds.m$value<-factor(diamonds.m$value,levels = c("No lo conozco","1","2","3","4","5","6","7","8","9","10"))
+
+ggplot(diamonds.m ,aes(x=variable, y=value, color = value))+
+  geom_jitter(size=1)+
+  labs(title="Preferencia practica pedagógica", subtitle = fase,x= "Practica pedagógica",y = "Nivel de preferencia")+
+  theme(axis.text.x = element_text(face = "italic", angle = 0, hjust = 0.5, vjust = 0.5, size=rel(1)))+
+   scale_color_brewer(palette="Set3")+theme(legend.position="none")
+  
+  }
