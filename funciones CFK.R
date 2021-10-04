@@ -213,3 +213,15 @@ my_scores_rendim<-function(datos,grupo){
   x
 }
 
+my_t.test<-function(varscon,varfact){
+# esta funcion recibe dataframe 'integrados2' filtrado por la variable 'grupo' y arroja los valores del t.test pareado comparando pre-post 
+tabla<-as.data.frame(matrix(NA,ncol = 4, nrow = ncol(varscon))); names(tabla)<-c("t value","df","p.value","d.cohen"); row.names(tabla)<-names(varscon)
+for(i in 1:ncol(varscon)){
+  x<-t.test(varscon[,i]~varfact, paired = TRUE)
+  tabla[i,1]<- round(x$statistic,2)
+  tabla[i,2]<- x$parameter
+  tabla[i,3]<- round(x$p.value,3)
+  tabla[i,4]<-sqrt((round(x[["estimate"]][["mean of the differences"]]/tapply(varscon[,i],varfact,sd)[2],3))^2)
+}
+tabla
+}
