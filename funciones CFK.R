@@ -253,3 +253,77 @@ for(i in 1:length(modelos)){
   }
 tabla
 }
+
+my_aciertos<-function(datos ,var_grupo, titulo, curso){
+  # datos = dataframe
+  # var_grupo = vector con valores dicotomicos
+  # nombre del vector dicotomico para que aparezca en el titulo de la grafica
+  if(is.factor({{var_grupo}})==TRUE){
+    x<-as.vector(levels({{var_grupo}})); x<-x[!is.na(x)]
+  }else{x<-as.vector(unique({{var_grupo}})); x<-x[!is.na(x)]}
+  
+  etiquetas<-paste0("desempenio",1:length(x))
+  lista<-NULL
+  if(curso=="inicial1"){
+    aciertos<-as.data.frame(matrix(NA,ncol = length(x), nrow =10))
+    a<-as.data.frame(matrix(NA,ncol = length(x), nrow = 10))
+    for(i in 1:length(x)){
+      lista[[i]]<- datos[9:18] %>% filter({{var_grupo}}==x[i])
+      j<- round(100*colSums(lista[[i]])/nrow(lista[[i]]),2)
+      aciertos[i]<-j
+      a[i]<-rep(x[i],10)
+    }
+    Categorias<-rep(c("Problemas de caso","Problemas de caso","Diagramas de flujo","Diagramas de flujo","Operaciones internas","Condicionales","Lógica booleana","Lógica booleana","Condicionales","Bucles"),length(x))
+    niveles<-c(paste0("pc",1:10))
+  }
+  if(curso=="avanzado1"){
+    aciertos<-as.data.frame(matrix(NA,ncol = length(x), nrow =8))
+    a<-as.data.frame(matrix(NA,ncol = length(x), nrow = 8))
+    for(i in 1:length(x)){
+      lista[[i]]<- datos[9:16] %>% filter({{var_grupo}}==x[i])
+      j<- round(100*colSums(lista[[i]])/nrow(lista[[i]]),2)
+      aciertos[i]<-j
+      a[i]<-rep(x[i],8)
+    }
+    Categorias<-rep(c("Operaciones internas","Condicionales pseudo-código","Condicionales MakeCode","Condicionales MakeCode","Operaciones internas","Bucles","Condicionales pseudo-código","Condicionales MakeCode"),length(x))
+    niveles<-c(paste0("pc",1:8))
+  }
+  if(curso=="inicial2"){
+    aciertos<-as.data.frame(matrix(NA,ncol = length(x), nrow =11))
+    a<-as.data.frame(matrix(NA,ncol = length(x), nrow = 11))
+    for(i in 1:length(x)){
+      lista[[i]]<- datos[9:19] %>% filter({{var_grupo}}==x[i])
+      j<- round(100*colSums(lista[[i]])/nrow(lista[[i]]),2)
+      aciertos[i]<-j
+      a[i]<-rep(x[i],11)
+    }
+    Categorias<-rep(c("Problemas de caso","Problemas de caso","Diagramas de flujo","Diagramas de flujo","Operaciones internas","Condicionales","Lógica booleana","Lógica booleana","Condicionales","Bucles","Lógica booleana"),length(x))
+    niveles<-c(paste0("pc",1:11))
+  }
+  if(curso=="avanzado2"){
+    aciertos<-as.data.frame(matrix(NA,ncol = length(x), nrow =9))
+    a<-as.data.frame(matrix(NA,ncol = length(x), nrow = 9))
+    for(i in 1:length(x)){
+      lista[[i]]<- datos[9:17] %>% filter({{var_grupo}}==x[i])
+      j<- round(100*colSums(lista[[i]])/nrow(lista[[i]]),2)
+      aciertos[i]<-j
+      a[i]<-rep(x[i],9)
+    }
+    Categorias<-rep(c("Operaciones internas","Condicionales","Condicionales","Condicionales","Operaciones internas","Bucles","Funciones","Condicionales","Funciones"),length(x))
+    niveles<-c(paste0("pc",1:9))
+  }
+  desempenio<-f.reubica(aciertos)
+  preguntas<-rep(paste0("pc",1:nrow(aciertos)),length(x))
+  grupos<-f.reubica(a)
+  aciertos<- as.data.frame(cbind(desempenio,preguntas,Categorias,grupos))
+  colnames(aciertos)<- c("Porcentaje", "Pregunta","Categoria","Fase")
+  aciertos$Porcentaje<- as.numeric(as.character(aciertos$Porcentaje))
+  
+  aciertos$Pregunta<-factor(aciertos$Pregunta, levels = niveles)
+  aciertos$Categoria<- factor(aciertos$Categoria, levels= unique(Categorias))
+  aciertos$Fase<-factor(aciertos$Fase, levels = x)
+  
+  ggplot(data=aciertos, aes(x=Pregunta, y=Porcentaje, fill=Fase)) +
+    geom_bar(stat="identity", position = "dodge")+ scale_fill_manual(values=brewer.pal(n = length(unique(Categorias)), name = "Pastel2"))+ geom_text(aes(label=paste(Porcentaje, "%", sep="")), size = 2.7, vjust=0, color="black", position = position_dodge(0.9), size=3.1)+(labs(title = paste("Aciertos por",titulo), x = "", y = "Porcentaje de aciertos"))+
+    ylim(0,100) + facet_wrap(aciertos$Categoria, scales = "free")
+}
