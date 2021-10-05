@@ -1,18 +1,20 @@
-## CFA
 
-if(!require(lavaan)){
-  install.packages("lavaan")
-}
-require(lavaan)
+if(!require(psych)){
+  install.packages('psych')  #instalar paquete psych
+  require(psych)}
+if(!require(dplyr)){
+  install.packages('dplyr')  #instalar paquete dplyr
+  require(dplyr)}
+if(!require(lavaan)){install.packages('lavaan')} 
+require(lavaan)       #Activar lavaan package. Se usa para Analisis de ecuaciones estructurales
+if(!require(lsr)){
+  install.packages('lsr')  #instalar paquete psych
+require(lsr)}
+
 mycfa<-function(mymodels,mydata){  
   #Recibe una lista que incluye los modelos y el dataframe con las variables
   #arroja una lista con los modelos especificados, objetos lavaan, la tabla de indices de ajuste,
   #y la tabla donde se determina el numero de indices de ajuste dentro los umbrales aceptables para determinar el modelo ganador
-  
-  if(!require(lavaan)){install.packages('lavaan')} 
-  require(lavaan)       #Activar lavaan package. Se usa para Analisis de ecuaciones estructurales
-  if(!require(dplyr)){install.packages('dplyr')}
-  require(dplyr)        #Activar dplyr package, se utiliza para manipulacion de datos
   
   modelos<-list()
   for(i in 1:length(mymodels)){
@@ -46,7 +48,8 @@ mycfa<-function(mymodels,mydata){
   indextablevalues$rmsea.pvalue<-ifelse(indextable$rmsea.pvalue<=0.05,1,0)
   indextablevalues$srmr<- ifelse(nrow(mydata)<500 & indextable$srmr==min(indextable$srmr),1,0)
   indextablevalues$gfi<- ifelse(indextable$gfi==max(indextable$gfi),1,0)
-  indextablevalues$agfi<- ifelse(indextable$agfi>=0.9,1,ifelse(sum(indextable$agfi>=0.9)==0 & 0.9-indextable$agfi==min(0.9-indextable$agfi),1,0))
+  indextablevalues$agfi<- ifelse(indextable$agfi>=0.9,1,ifelse(indextable$agfi==max(indextable$agfi),1,0))
+  
   indextablevalues$pgfi<- ifelse(indextable$pgfi==max(indextable$pgfi),1,ifelse(sqrt((max(indextable$pgfi)-indextable$pgfi)^2)<=0.09,1,0))
   indextablevalues$ecvi<- ifelse(nrow(mydata)<500 & indextable$ecvi==min(indextable$ecvi),1,0)
   
