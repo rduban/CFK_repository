@@ -10,7 +10,6 @@ require(lavaan)       #Activar lavaan package. Se usa para Analisis de ecuacione
 if(!require(lsr)){
   install.packages('lsr')  #instalar paquete psych
 require(lsr)}
-
 mycfa<-function(mymodels,mydata){  
   #Recibe una lista que incluye los modelos y el dataframe con las variables
   #arroja una lista con los modelos especificados, objetos lavaan, la tabla de indices de ajuste,
@@ -65,6 +64,7 @@ mycfa<-function(mymodels,mydata){
   cat('The comparison of the models and the scoring of the fit indices were based on the guidelines of Hair, et al. (2014). Cite: Hair, J., Black, W., Babin, B. & Anderson, R. (2014). Multivariate Data Analysis (7th ed.). USA. Pearson.' )
   output
 }
+
 
 #calcular puntuaciones factoriales
 
