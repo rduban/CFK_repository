@@ -65,7 +65,6 @@ mycfa<-function(mymodels,mydata){
   output
 }
 
-
 #calcular puntuaciones factoriales
 
 my_scores<-function(datos,cargas){
