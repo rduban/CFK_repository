@@ -303,7 +303,7 @@ my_aciertos<-function(datos ,var_grupo, titulo, curso){
       aciertos[i]<-j
       a[i]<-rep(x[i],8)
     }
-    Categorias<-rep(c("Operaciones internas","Condicionales pseudo-código","Condicionales MakeCode","Condicionales MakeCode","Operaciones internas","Bucles","Condicionales pseudo-código","Condicionales MakeCode"),length(x))
+    Categorias<-rep(c("Operaciones internas","Condicionales pseudo-codigo","Condicionales MakeCode","Condicionales MakeCode","Operaciones internas","Bucles","Condicionales pseudo-codigo","Condicionales MakeCode"),length(x))
     niveles<-c(paste0("pc",1:8))
   }
   if(curso=="inicial2"){
@@ -315,7 +315,7 @@ my_aciertos<-function(datos ,var_grupo, titulo, curso){
       aciertos[i]<-j
       a[i]<-rep(x[i],11)
     }
-    Categorias<-rep(c("Problemas de caso","Problemas de caso","Diagramas de flujo","Diagramas de flujo","Operaciones internas","Condicionales","Lógica booleana","Lógica booleana","Condicionales","Bucles","Lógica booleana"),length(x))
+    Categorias<-rep(c("Problemas de caso","Problemas de caso","Diagramas de flujo","Diagramas de flujo","Operaciones internas","Condicionales","Logica booleana","Logica booleana","Condicionales","Bucles","Logica booleana"),length(x))
     niveles<-c(paste0("pc",1:11))
   }
   if(curso=="avanzado2"){
@@ -389,7 +389,7 @@ my_aciertos_gr<-function(datos ,var_grupo, titulo, curso){
       aciertos[i]<-j
       a[i]<-rep(x[i],11)
     }
-    Categorias<-rep(c("Problemas de caso","Problemas de caso","Diagramas de flujo","Diagramas de flujo","Operaciones internas","Condicionales","Logica booleana","Logica booleana","Condicionales","Bucles","Lógica booleana"),length(x))
+    Categorias<-rep(c("Problemas de caso","Problemas de caso","Diagramas de flujo","Diagramas de flujo","Operaciones internas","Condicionales","Logica booleana","Logica booleana","Condicionales","Bucles","Logica booleana"),length(x))
     niveles<-c(paste0("pc",1:11))
   }
   if(curso=="avanzado2"){
