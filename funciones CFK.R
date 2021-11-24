@@ -10,6 +10,9 @@ require(lavaan)       #Activar lavaan package. Se usa para Analisis de ecuacione
 if(!require(lsr)){
   install.packages('lsr')  #instalar paquete psych
 require(lsr)}
+if(!require(perm)){
+  install.packages('perm')  #instalar paquete dplyr
+  require(perm)}
 mycfa<-function(mymodels,mydata){  
   #Recibe una lista que incluye los modelos y el dataframe con las variables
   #arroja una lista con los modelos especificados, objetos lavaan, la tabla de indices de ajuste,
@@ -444,3 +447,127 @@ ggplot(diamonds.m ,aes(x=variable, y=value, color = value))+
    scale_color_brewer(palette="Set3")+theme(legend.position="none")
   
   }
+
+#### APG model
+plotModel <- function (col1,col2, col1Name,col2Name, level=1, title=FALSE)
+{
+  
+  if(level==1)
+  {
+    data2 <- aggregate(col1,by=list(x=col1,y=col2),length)
+    names(data2)[3] <- "count"
+    first <- (sum(data2[data2$x<data2$y,]$count) + 
+                sum(data2[data2$x==data2$y,]$count/2))/sum(data2$count)
+    print(first)
+    
+    second <- (sum(data2[data2$x>data2$y,]$count) + 
+                 sum(data2[data2$x==data2$y,]$count/2) )/sum(data2$count)
+    print(second)
+    
+    df<- data.frame(x=c(0,10), y0=c(0,10),y1=c(0,0), y2=c(10,10))
+    plot <- ggplot(data = df,aes(x,y0))+
+      geom_ribbon(aes(x=x, ymax=y0, ymin=y2), fill="gray39", alpha=(first)) +
+      geom_ribbon(aes(x=x, ymax=y1, ymin=y0), fill="gray39", alpha=(second)) +
+      annotate("text", x=2.5, y=7.5, label= paste(round(100*first, 2),'%',sep=''), size=8, color="gray0")+
+      annotate("text", x=7.5, y=2.5, label= paste(round(100*second,2),'%',sep=''), size=8, color="gray0")+
+      labs(x=col1Name,y=col2Name) +
+      theme_bw(base_size=16)
+    
+    
+  }else if(level==2)
+  {
+    cuantx<- quantile(col1, probs = 0.5)
+    cuanty<- quantile(col2, probs = 0.5)
+    data2 <- aggregate(col1,by=list(x=col1,y=col2),length)
+    names(data2)[3] <- "count"
+    first <- (sum(data2[data2$x<cuantx&data2$y<cuanty,]$count) + 
+                sum(data2[data2$x==cuantx&data2$y<cuanty,]$count/2) +
+                sum(data2[data2$x<cuantx&data2$y==cuanty,]$count/2) +
+                sum(data2[data2$x==cuantx&data2$y==cuanty,]$count/4))/sum(data2$count)
+    print(first)
+    second <- (sum(data2[data2$x<cuantx&data2$y>cuanty,]$count) + 
+                 sum(data2[data2$x==cuantx&data2$y>cuanty,]$count/2) +
+                 sum(data2[data2$x<cuantx&data2$y==cuanty,]$count/2) +
+                 sum(data2[data2$x==cuantx&data2$y==cuanty,]$count/4))/sum(data2$count)
+    print(second)
+    third <- (sum(data2[data2$x>cuantx&data2$y<cuanty,]$count) + 
+                sum(data2[data2$x==cuantx&data2$y<cuanty,]$count/2) +
+                sum(data2[data2$x>cuantx&data2$y==cuanty,]$count/2) +
+                sum(data2[data2$x==cuantx&data2$y==cuanty,]$count/4))/sum(data2$count)
+    print(third)
+    fourth <- (sum(data2[data2$x>cuantx&data2$y>cuanty,]$count) + 
+                 sum(data2[data2$x==cuantx&data2$y>cuanty,]$count/2) +
+                 sum(data2[data2$x>cuantx&data2$y==cuanty,]$count/2) +
+                 sum(data2[data2$x==cuantx&data2$y==cuanty,]$count/4))/sum(data2$count)
+    print(fourth)
+    df<- data.frame(x=c(2.5, 2.5, 7.5, 7.5), y=c(2.5,7.5,2.5,7.5))
+    df$weights<-c(first,second,third,fourth)
+    plot <- ggplot(data = df, aes(x=x, y=y, fill=weights)) + 
+      geom_tile() + scale_fill_gradient(low = "white",high = "gray39", guide = FALSE)+ #high = "springgreen4")+#
+      labs(x=col1Name,y=col2Name) +
+      annotate("text", x=df$x, y=df$y, label= paste(round(100*df$weights,2),'%',sep=''), size=8, color="gray0")+
+      theme_bw(base_size=16)
+    
+  }else
+  {
+    print(3)
+    data2 <- aggregate(col1,by=list(x=col1,y=col2),length)
+    names(data2)[3] <- "count"
+    first.a <- (sum(data2[(data2$x<5&data2$y<5)&(data2$x<data2$y),]$count) +
+                  sum(data2[(data2$x<5&data2$y<5)&(data2$x==data2$y),]$count)/2 + 
+                  sum(data2[data2$x<5&data2$y==5,]$count/2) +
+                  sum(data2[data2$x==5&data2$y==5,]$count/6))/sum(data2$count)
+    first.b <- (sum(data2[(data2$x<5&data2$y<5)&(data2$x>data2$y),]$count) +
+                  sum(data2[(data2$x<5&data2$y<5)&(data2$x==data2$y),]$count)/2 + 
+                  sum(data2[data2$x==5&data2$y<5,]$count/2) +
+                  sum(data2[data2$x==5&data2$y==5,]$count/6))/sum(data2$count)
+    print(first.a)
+    print(first.b)
+    
+    second <- (sum(data2[data2$x<5&data2$y>5,]$count) + 
+                 sum(data2[data2$x==5&data2$y>5,]$count/2) +
+                 sum(data2[data2$x<5&data2$y==5,]$count/2) +
+                 sum(data2[data2$x==5&data2$y==5,]$count/6))/sum(data2$count)
+    print(second)
+    third <- (sum(data2[data2$x>5&data2$y<5,]$count) + 
+                sum(data2[data2$x==5&data2$y<5,]$count/2) +
+                sum(data2[data2$x>5&data2$y==5,]$count/2) +
+                sum(data2[data2$x==5&data2$y==5,]$count/6))/sum(data2$count)
+    print(third)
+    fourth.a <- (sum(data2[(data2$x>5&data2$y>5)&(data2$x<data2$y),]$count) +
+                   sum(data2[(data2$x>5&data2$y>5)&(data2$x==data2$y),]$count/2) + 
+                   sum(data2[data2$x==5&data2$y>5,]$count/2) +
+                   sum(data2[data2$x==5&data2$y==5,]$count/6))/sum(data2$count)
+    
+    fourth.b <- (sum(data2[(data2$x>5&data2$y>5)&(data2$x>data2$y),]$count) +
+                   sum(data2[(data2$x>5&data2$y>5)&(data2$x==data2$y),]$count/2) + 
+                   sum(data2[data2$x>5&data2$y==5,]$count/2) +
+                   sum(data2[data2$x==5&data2$y==5,]$count/6))/sum(data2$count)
+    print(fourth.a)
+    print(fourth.b)
+    
+    df<- data.frame(x=c(0,10), x0=c(0,5), x1=c(5,10), y=c(0,10),y0=c(0,0),y1=c(0,5), y2=c(5,5), y3=c(5,10), y4=c(10,10))
+    
+    plot <-  ggplot(data = df,aes(x,y))+
+      geom_ribbon(aes(x=x0, ymax=y1, ymin=y0), fill="gray39", alpha=(first.b)) +
+      geom_ribbon(aes(x=x0, ymax=y2, ymin=y1), fill="gray39", alpha=(first.a)) +
+      geom_ribbon(aes(x=x0, ymax=y4, ymin=y2), fill="gray39", alpha=(second)) +
+      geom_ribbon(aes(x=x1, ymax=y2, ymin=y0), fill="gray39", alpha=(third)) +
+      geom_ribbon(aes(x=x1, ymax=y2, ymin=y3), fill="gray39", alpha=(fourth.b)) +
+      geom_ribbon(aes(x=x1, ymax=y3, ymin=y4), fill="gray39", alpha=(fourth.a)) +
+      annotate("text", x=1.25, y=3.75, label= paste(round(100*first.a, 2),'%',sep=''), size=8, color="gray0")+
+      annotate("text", x=3.75, y=1.25, label= paste(round(100*first.b,2),'%',sep=''), size=8, color="gray0")+
+      annotate("text", x=2.5, y=7.5, label= paste(round(100*second, 2),'%',sep=''), size=8, color="gray0")+
+      annotate("text", x=7.5, y=2.5, label= paste(round(100*third,2),'%',sep=''), size=8, color="gray0")+
+      annotate("text", x=6.25, y=8.75, label= paste(round(100*fourth.a, 2),'%',sep=''), size=8, color="gray0")+
+      annotate("text", x=8.75, y=6.25, label= paste(round(100*fourth.b,2),'%',sep=''), size=8, color="gray0")+
+      geom_abline(slope = 1, size = 0.5)+
+      labs(x=col1Name,y=col2Name) +
+      theme_bw(base_size=16)
+    
+  }
+  if(title){
+    plot <- plot +ggtitle(paste(col1Name," vs. ", col2Name))
+  }
+  plot
+}
