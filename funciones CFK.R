@@ -591,3 +591,9 @@ testGroups <- function (col1,col2)
   
   permKS(data2$y,data2$group,exact = NULL, method = 'exact.mc')
 }
+
+varAPG<- function(col1,col2){
+  
+  ifelse(col1<=50&col2>50,"A",ifelse(col1<=50&col2<=50,"B",ifelse(col1>=50&col2>50,"C",ifelse(col1>=50&col2<50,"D",NA))))
+
+}
