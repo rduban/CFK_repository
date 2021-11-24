@@ -571,3 +571,23 @@ plotModel <- function (col1,col2, col1Name,col2Name, level=1, title=FALSE)
   }
   plot
 }
+
+
+testGroups <- function (col1,col2)
+{
+  data2<-data.frame(cbind(col1,col2))
+  colnames(data2) <- c('x','y')
+  data2<- data2[complete.cases(data2), ]
+  data2$group<-NA
+  
+  cuantx<- quantile(col2, probs = 0.5)
+  cuanty<- quantile(col2, probs = 0.5)
+  
+  if(length(data2[data2$x<=cuantx&data2$y>=cuanty,]$group)) data2[data2$x<=cuantx&data2$y>=cuanty,]$group <- 'A'
+  if(length(data2[data2$x<=cuantx&data2$y<=cuanty,]$group)) data2[data2$x<=cuantx&data2$y<=cuanty,]$group <- 'B'
+  if(length(data2[data2$x>=cuantx&data2$y>=cuanty,]$group)) data2[data2$x>=cuantx&data2$y>=cuanty,]$group <- 'C'
+  if(length(data2[data2$x>=cuantx&data2$y<=cuanty,]$group)) data2[data2$x>=cuantx&data2$y<=cuanty,]$group <- 'D'
+  
+  
+  permKS(data2$y,data2$group,exact = NULL, method = 'exact.mc')
+}
