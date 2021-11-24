@@ -449,7 +449,7 @@ ggplot(diamonds.m ,aes(x=variable, y=value, color = value))+
   }
 
 #### APG model
-plotModel <- function (col1,col2, col1Name,col2Name, level=1, title=FALSE)
+plotModel<-function (col1,col2, col1Name,col2Name, level=1, title=FALSE)
 {
   
   if(level==1)
@@ -546,7 +546,7 @@ plotModel <- function (col1,col2, col1Name,col2Name, level=1, title=FALSE)
     print(fourth.a)
     print(fourth.b)
     
-    df<- data.frame(x=c(0,10), x0=c(0,5), x1=c(5,10), y=c(0,10),y0=c(0,0),y1=c(0,5), y2=c(5,5), y3=c(5,10), y4=c(10,10))
+    df<- data.frame(x=c(0,100), x0=c(0,50), x1=c(50,100), y=c(0,100),y0=c(0,0),y1=c(0,50), y2=c(50,50), y3=c(50,100), y4=c(100,100))
     
     plot <-  ggplot(data = df,aes(x,y))+
       geom_ribbon(aes(x=x0, ymax=y1, ymin=y0), fill="gray39", alpha=(first.b)) +
@@ -571,7 +571,6 @@ plotModel <- function (col1,col2, col1Name,col2Name, level=1, title=FALSE)
   }
   plot
 }
-
 
 testGroups <- function (col1,col2)
 {
