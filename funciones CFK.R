@@ -597,7 +597,7 @@ varAPG<- function(col1,col2){
 
 }
 
-practicas2020<- function(datos, etiqueta=NULL){
+practicas2022<- function(datos, etiqueta=NULL){
   theme_set(ggpubr::theme_pubclean())
   datos<-na.omit(datos)
   diamonds.frac<-dplyr::sample_frac(datos)
@@ -622,7 +622,7 @@ practicas2020<- function(datos, etiqueta=NULL){
                                      angle = 0,
                                      hjust = 0.5,
                                      vjust = 0.5,
-                                     size=rel(1)))+
+                                     size=rel(0.8)))+
     scale_color_brewer(palette="Set3")+
     theme(legend.position="none")
 }
