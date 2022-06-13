@@ -596,3 +596,33 @@ varAPG<- function(col1,col2){
   ifelse(col1<=50&col2>50,"A",ifelse(col1<=50&col2<=50,"B",ifelse(col1>=50&col2>50,"C",ifelse(col1>=50&col2<50,"D",NA))))
 
 }
+
+practicas2020<- function(datos, etiqueta=NULL){
+  theme_set(ggpubr::theme_pubclean())
+  datos<-na.omit(datos)
+  diamonds.frac<-dplyr::sample_frac(datos)
+  
+  names(diamonds.frac)<-c("Actividades desconectadas","Usa-modifica-crea",
+                          "Clase magistral","Dar respuesta correcta",
+                          "Sugerir ir paso a paso","Sugerir revisar notas")
+  
+  variables <- colnames(diamonds.frac)
+  diamonds.frac[ diamonds.frac == 0 ] <- 'No lo conozco'
+  
+  diamonds.m <- reshape::melt(diamonds.frac,id.vars=0)
+  
+  diamonds.m$value<-factor(diamonds.m$value,levels = c("No lo conozco",1:10))
+  
+  ggplot(diamonds.m ,aes(x=variable, y=value, color = value))+
+    geom_jitter(size=0.7)+
+    labs(title="Preferencia practica pedagogica", 
+         subtitle = etiqueta,x= "Practica pedagogica",
+         y = "Nivel de preferencia")+
+    theme(axis.text.x = element_text(face = "italic",
+                                     angle = 0,
+                                     hjust = 0.5,
+                                     vjust = 0.5,
+                                     size=rel(1)))+
+    scale_color_brewer(palette="Set3")+
+    theme(legend.position="none")
+}
