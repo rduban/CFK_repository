@@ -600,7 +600,7 @@ varAPG<- function(col1,col2){
 
 }
 
-practicas2022<- function(datos, etiqueta=NULL){
+practicas2022<- function(datos, etiqueta=NULL,size=0.7){
   theme_set(theme_pubclean())
   datos<-na.omit(datos)
   diamonds.frac<-dplyr::sample_frac(datos)
@@ -617,7 +617,7 @@ practicas2022<- function(datos, etiqueta=NULL){
   diamonds.m$value<-factor(diamonds.m$value,levels = c("No lo conozco",1:10))
   
   ggplot(diamonds.m ,aes(x=variable, y=value, color = value))+
-    geom_jitter(size=0.7)+
+    geom_jitter(size=size)+
     labs(title="Preferencia practica pedagogica", 
          subtitle = etiqueta,x= "Practica pedagogica",
          y = "Nivel de preferencia")+
