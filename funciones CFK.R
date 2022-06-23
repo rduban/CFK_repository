@@ -2,6 +2,9 @@
 if(!require(psych)){
   install.packages('psych')  #instalar paquete psych
   require(psych)}
+if(!require(ggpubr)){
+  install.packages('ggpubr')  #instalar paquete dplyr
+  require(ggpubr)}
 if(!require(dplyr)){
   install.packages('dplyr')  #instalar paquete dplyr
   require(dplyr)}
@@ -598,7 +601,7 @@ varAPG<- function(col1,col2){
 }
 
 practicas2022<- function(datos, etiqueta=NULL){
-  theme_set(ggpubr::theme_pubclean())
+  theme_set(theme_pubclean())
   datos<-na.omit(datos)
   diamonds.frac<-dplyr::sample_frac(datos)
   
